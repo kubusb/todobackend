@@ -1,0 +1,29 @@
+---
+test:
+  build: ../../
+  dockerfile: docker/dev/Dockerfile
+  volumes_from:
+    - cache
+  links:
+    - db
+  environment:
+    DJANGO_SETTINGS_MODULE: todobackend.settings.test
+    MYSQL_HOST: db
+    MYSQL_USER: root
+    MYSQL_PASSWORD: test_pass
+    TEST_PUTPUT_DIR: /reports
+
+db:
+  image: mysql:5.6
+  hostname: db
+  expose:
+    - "3306"
+  environment:
+    MYSQL_ROOT_PASSWORD: test_pass
+
+cache:
+  build: ../../
+  dockerfile: docker/dev/Dockerfile
+  volumes:
+    - /tmo/cache:/cache
+  entrypoint: "true"
