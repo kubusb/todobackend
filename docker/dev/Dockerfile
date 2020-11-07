@@ -15,6 +15,9 @@ ENV WHEELHOUSE=/wheelhouse PIP_WHEEL_DIR=/wheelhouse PIP_FIND_LINKS=/wheelhouse 
 # OUTPUT: Build artefacts (wheels) are output here
 VOLUME /wheelhouse
 
+# Output: Build cache
+VOLUME /build
+
 # OUTPUT: Test reports are output here
 VOLUME /reports
 
