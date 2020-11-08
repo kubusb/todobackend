@@ -45,6 +45,6 @@ cache:
   build: ../../
   dockerfile: docker/dev/Dockerfile
   volumes:
-    - /tmo/cache:/cache
+    - /tmp/cache:/cache
     - /build
   entrypoint: "true"
