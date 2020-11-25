@@ -3,8 +3,8 @@ ORG_NAME ?= kubusb
 REPO_NAME ?= todobackend
 
 # Filenames
-DEV_COMPOSE_FILE := docker/dev/docker-compose-v2.yml
-REL_COMPOSE_FILE := docker/release/docker-compose-v2.yml
+DEV_COMPOSE_FILE := docker/dev/docker-compose.yml
+REL_COMPOSE_FILE := docker/release/docker-compose.yml
 
 REL_PROJECT := $(PROJECT_NAME)$(BUILD_ID)
 DEV_PROJECT := $(REL_PROJECT)_dev
@@ -33,9 +33,7 @@ CHECK := @bash -c 'if [[ $(INSPECT) -ne 0 ]]; then exit $(INSPECT); fi' VALUE
 .PHONY: test build release clean tag buildtag login logout publish
 
 test:
-	${INFO} "Creating cache volume..."
-	@ docker volume create --name cache
-	${INFO} "Running tests"
+	$(INFO) "Running tests"
 	@ docker-compose -p $(DEV_PROJECT) -f $(DEV_COMPOSE_FILE) pull
 	@ docker-compose -p $(DEV_PROJECT) -f $(DEV_COMPOSE_FILE) build --pull test
 	@ docker-compose -p $(DEV_PROJECT) -f $(DEV_COMPOSE_FILE) run --rm agent
@@ -54,9 +52,10 @@ build:
 	$(INFO) "Build completed"
 
 release:
-	$(INFO) "Releasing"
+	$(INFO) "Releaseing"
 	@ docker-compose -p $(REL_PROJECT) -f $(REL_COMPOSE_FILE) pull test
 	@ docker-compose -p $(REL_PROJECT) -f $(REL_COMPOSE_FILE) build app
+	@ docker-compose -p $(REL_PROJECT) -f $(REL_COMPOSE_FILE) build webroot
 	@ docker-compose -p $(REL_PROJECT) -f $(REL_COMPOSE_FILE) build --pull nginx
 	@ docker-compose -p $(REL_PROJECT) -f $(REL_COMPOSE_FILE) run --rm agent
 	$(INFO) "Collecting static content"
@@ -71,10 +70,9 @@ release:
 
 clean:
 	$(INFO) "Destroying development environment..."
-	@ docker-compose -p $(REL_PROJECT) -f $(DEV_COMPOSE_FILE) down -v
-	$(INFO) "Destroying release environment..."
-	@ docker-compose -p $(REL_PROJECT) -f $(REL_COMPOSE_FILE) down -v
-	@ docker images -q -f dangling=true -f label=application=$(REPO_NAME) | xargs -I ARGS docker rmi -f ARGS
+	docker-compose -p $(REL_PROJECT) -f $(DEV_COMPOSE_FILE) down -v
+	docker-compose -p $(REL_PROJECT) -f $(REL_COMPOSE_FILE) down -v
+	docker images -q -f dangling=true -f label=application=$(REPO_NAME) | xargs -I ARGS docker rmi -f ARGS
 	$(INFO) "Clean complete"
 
 tag:
