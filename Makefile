@@ -73,9 +73,9 @@ clean:
 	$(INFO) "Stopping everything"
 #	docker container stop $(docker container ls -q --filter name=todobackend*)
 	$(INFO) "Destroying development environment..."
-	@ docker-compose -p $(REL_PROJECT) -f $(DEV_COMPOSE_FILE) stop
+	@ docker-compose -p $(DEV_PROJECT) -f $(DEV_COMPOSE_FILE) down -v
 	$(INFO) "Destroying release environment..."
-	@ docker-compose -p $(REL_PROJECT) -f $(REL_COMPOSE_FILE) stop
+	@ docker-compose -p $(REL_PROJECT) -f $(REL_COMPOSE_FILE) down -v
 	$(INFO) "Clean complete"
 
 tag:
