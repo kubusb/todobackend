@@ -75,7 +75,7 @@ clean:
 	$(INFO) "Destroying development environment..."
 	@ docker-compose -p $(REL_PROJECT) -f $(DEV_COMPOSE_FILE) down
 	$(INFO) "Destroying release environment..."
-	@ docker-compose -p $(REL_PROJECT) -f $(REL_COMPOSE_FILE) down
+	@ docker-compose -p $(REL_PROJECT) -f $(REL_COMPOSE_FILE) stop
 	$(INFO) "Clean complete"
 
 tag:
