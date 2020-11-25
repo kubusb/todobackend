@@ -70,10 +70,14 @@ release:
 	$(INFO) "Release completed" $(date)
 
 clean:
+	$(INFO) "Stopping everything"
+	@ docker-compose -p $(REL_PROJECT) -f $(DEV_COMPOSE_FILE) stop
+	@ docker-compose -p $(REL_PROJECT) -f $(REL_COMPOSE_FILE) stop
+	@ docker container stop $(docker container ls -q --filter name=$(REPO_NAME)*)
 	$(INFO) "Destroying development environment..."
-	@ docker-compose -p $(REL_PROJECT) -f $(DEV_COMPOSE_FILE) down -v
+	@ docker-compose -p $(REL_PROJECT) -f $(DEV_COMPOSE_FILE) down -v --remove-orphans
 	$(INFO) "Destroying release environment..."
-	@ docker-compose -p $(REL_PROJECT) -f $(REL_COMPOSE_FILE) down -v
+	@ docker-compose -p $(REL_PROJECT) -f $(REL_COMPOSE_FILE) down -v --remove-orphans
 	@ docker images -q -f dangling=true -f label=application=$(REPO_NAME) | xargs -I ARGS docker rmi -f ARGS
 	$(INFO) "Clean complete"
 
