@@ -75,10 +75,9 @@ clean:
 	@ docker-compose -p $(REL_PROJECT) -f $(REL_COMPOSE_FILE) stop
 #	docker container stop $(docker container ls -q --filter name=todobackend*)
 	$(INFO) "Destroying development environment..."
-	@ docker-compose -p $(REL_PROJECT) -f $(DEV_COMPOSE_FILE) down -v
+	@ docker-compose -p $(REL_PROJECT) -f $(DEV_COMPOSE_FILE) down
 	$(INFO) "Destroying release environment..."
-	@ docker-compose -p $(REL_PROJECT) -f $(REL_COMPOSE_FILE) down -v
-	@ docker images -q -f dangling=true -f label=application=$(REPO_NAME) | xargs -I ARGS docker rmi -f ARGS
+	@ docker-compose -p $(REL_PROJECT) -f $(REL_COMPOSE_FILE) down
 	$(INFO) "Clean complete"
 
 tag:
