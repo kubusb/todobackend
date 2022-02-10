@@ -7,7 +7,7 @@ setup (
   packages              = find_packages(),
   include_package_data  = True,
   scripts               = [ "manage.py" ],
-  install_requires      = [ "Django==2.2.24",
+  install_requires      = [ "Django==2.2.27",
                             "django-cors-headers==1.1.0",
                             "djangorestframework==3.11.2",
                             "MySQL-python==1.2.5",
