@@ -11,7 +11,7 @@ setup (
                             "django-cors-headers==1.1.0",
                             "djangorestframework==3.11.2",
                             "MySQL-python==1.2.5",
-                            "uwsgi==2.0" ],
+                            "uwsgi==2.0.22" ],
   extras_require        = {
                             "test": [
                                 "colorama==0.4.4",
